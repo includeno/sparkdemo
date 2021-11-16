@@ -1,6 +1,7 @@
 package utils;
 
 import config.Constants;
+import config.KafkaConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
@@ -13,10 +14,7 @@ import java.util.Properties;
 public class KafkaUtil {
 
     public static void main(String[] args) {
-        Properties properties=new Properties();
-        properties.put("bootstrap.servers",PropertiesUtil.getProperty(Constants.KafkaConfigFileName, Constants.KAFKA_BOOTSTRAP_SERVERS));
-        properties.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
+        Properties properties=KafkaConfig.getProperties();
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
 
@@ -50,6 +48,17 @@ public class KafkaUtil {
 
         }
         return true;
+    }
 
+    public static boolean sendByGson(KafkaProducer<String, Object> producer,String topic,String key,Object value){
+        ProducerRecord<String,Object> record=new ProducerRecord<>(topic,key,value);
+        try{
+            producer.send(record).get();
+            System.out.println("succeed");
+        }
+        catch (Exception e){
+
+        }
+        return true;
     }
 }

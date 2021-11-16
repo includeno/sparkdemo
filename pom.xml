@@ -12,6 +12,7 @@
         <module>sparkoperation</module>
         <module>kafkaoperation</module>
         <module>tf_idf_demo</module>
+        <module>sparkstreaming_operation</module>
     </modules>
 
     <properties>
